@@ -4,6 +4,10 @@ This code originally developed in [main project repo](https://github.com/hsluv/h
 
 ## Changelog
 
+### 0.0.3
+
+- Expose intermediate functions in the public API.
+
 ### 0.0.2
 
 - Improve packaging and minification.
