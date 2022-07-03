@@ -1,0 +1,42 @@
+{
+  "name": "hsluv",
+  "description": "Human-friendly HSL",
+  "keywords": [
+    "color",
+    "color space",
+    "CIE",
+    "RGB",
+    "HSL",
+    "HSLuv",
+    "HPLuv"
+  ],
+  "version": "1.0.0-rc1",
+  "author": "Alexei Boronine <alexei@boronine.com>",
+  "license": "MIT",
+  "files": [
+    "dist/hsluv.d.ts",
+    "dist/esm/hsluv.js",
+    "dist/esm/package.json",
+    "dist/cjs/hsluv.js",
+    "dist/cjs/package.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "types": "dist/hsluv.d.ts",
+  "exports": {
+    "import": "./dist/esm/hsluv.js",
+    "require": "./dist/cjs/hsluv.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hsluv/hsluv-javascript.git"
+  },
+  "homepage": "https://www.hsluv.org",
+  "devDependencies": {
+    "typescript": "^4.7.4",
+    "esbuild": "^0.14.48"
+  },
+  "scripts": {
+    "build": "sh build.sh"
+  }
+}
