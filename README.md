@@ -4,6 +4,10 @@ This code originally developed in [main project repo](https://github.com/hsluv/h
 
 ## Changelog
 
+### 0.0.2
+
+- Improve packaging and minification.
+
 ### 0.0.1
 
 - Initial release under the name HSLuv. Old releases can be found [here](https://www.npmjs.com/package/husl).
