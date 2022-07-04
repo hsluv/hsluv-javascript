@@ -1,6 +1,6 @@
 # HSLuv - Human-friendly HSL
 
-[![CI](https://github.com/hsluv/hsluv-javascript/actions/workflows/node.js.yml/badge.svg)](https://github.com/hsluv/hsluv-javascript/actions/workflows/node.js.yml)
+[![CI](https://github.com/hsluv/hsluv-javascript/actions/workflows/nodeci.yml/badge.svg)](https://github.com/hsluv/hsluv-javascript/actions/workflows/node.js.yml)
 [![npm](https://img.shields.io/npm/v/hsluv)](https://www.npmjs.com/package/hsluv)
 
 ## Installation

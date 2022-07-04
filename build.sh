@@ -2,8 +2,12 @@
 
 set -e
 
-rm -rf dist
-mkdir -p dist
+rm -rf dist assets
+mkdir -p dist assets
+
+# Store package version
+PACKAGE_VERSION=$(node -p -e 'require("./package.json").version')
+echo "${PACKAGE_VERSION}" >assets/VERSION
 
 # First build ESM version that is used for testing
 npx tsc src/hsluv.ts --outDir dist/esm --module es6 --target es6
@@ -21,15 +25,15 @@ npx tsc src/hsluv.ts --outDir dist --declaration --emitDeclarationOnly
 
 # Build hsluv.min.js
 echo 'import {Hsluv} from "./esm/hsluv.js";window.Hsluv = Hsluv;' >dist/browser-entry.js
-npx esbuild dist/browser-entry.js --bundle --minify --outfile=dist/hsluv.min.js
+npx esbuild dist/browser-entry.js --bundle --minify --outfile="assets/hsluv-${PACKAGE_VERSION}.min.js"
 
 # Build npm package
-TARBALL=$(cd dist && npm pack ../)
+TARBALL=$(cd assets && npm pack ../)
 
 # Test that both commonjs and esm imports work
 rm -rf test/tmp
 mkdir test/tmp
 echo "{}" >test/tmp/package.json
-(cd test/tmp && npm install "../../dist/${TARBALL}")
+(cd test/tmp && npm install "../../assets/${TARBALL}")
 (cd test/tmp && node --input-type=module -e 'import {Hsluv} from "hsluv"; console.log("ESM OK")')
 (cd test/tmp && node --input-type=commonjs -e 'const {Hsluv} = require("hsluv"); console.log("CommonJS OK")')

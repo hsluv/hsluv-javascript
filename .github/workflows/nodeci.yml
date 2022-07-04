@@ -1,0 +1,77 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [ 12.x, 14.x, 16.x ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: Store artifacts
+        if: matrix.node-version == '16.x'
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-assets
+          path: assets/
+  release:
+    runs-on: ubuntu-latest
+    # Wait for build because we need the build artifacts here
+    needs: [ build ]
+    # Only run when pushing to main branch
+    if: github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      # Download artifact instead of rebuilding
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-assets
+          path: assets/
+      - run: echo "HSLUV_VERSION=$(cat assets/VERSION)" >> ${{ github.env }}
+      - uses: rickstaa/action-create-tag@v1
+        id: create-tag
+        # When tag already exists, do not fail the job
+        continue-on-error: true
+        with:
+          tag: "v${{ env.HSLUV_VERSION }}"
+      - uses: ncipollo/release-action@v1
+        if: ${{ steps.create-tag.outcome == 'success' }}
+        with:
+          artifacts: assets/hsluv-${{ env.HSLUV_VERSION }}.min.js
+          tag: v${{ env.HSLUV_VERSION }}
+          draft: true
+          omitBody: true
+          prerelease: ${{ contains(env.HSLUV_VERSION, 'rc') }}
+          bodyFile: "body.md"
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+      - uses: actions/setup-node@v3
+        if: ${{ steps.create-tag.outcome == 'success' }}
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm publish ./assets/hsluv-${{ env.HSLUV_VERSION }}.tgz --tag rc
+        if: ${{ steps.create-tag.outcome == 'success' && contains(env.HSLUV_VERSION, 'rc') }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.HSLUV_NPM_AUTOMATION_TOKEN }}
+      - run: npm publish ./assets/hsluv-${{ env.HSLUV_VERSION }}.tgz
+        if: ${{ steps.create-tag.outcome == 'success' && !contains(env.HSLUV_VERSION, 'rc') }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.HSLUV_NPM_AUTOMATION_TOKEN }}
