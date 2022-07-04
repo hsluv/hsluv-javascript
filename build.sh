@@ -27,6 +27,12 @@ npx tsc src/hsluv.ts --outDir dist --declaration --emitDeclarationOnly
 echo 'import {Hsluv} from "./esm/hsluv.js";window.Hsluv = Hsluv;' >dist/browser-entry.js
 npx esbuild dist/browser-entry.js --bundle --minify --outfile="assets/hsluv-${PACKAGE_VERSION}.min.js"
 
+# Sanity check hsluv.min.js window export
+echo "const window = {};" >dist/browser-test.js
+cat "assets/hsluv-${PACKAGE_VERSION}.min.js" >>dist/browser-test.js
+echo "if (window.Hsluv) { console.log('Browser OK') } else { throw new Error('browser build broken') }" >>dist/browser-test.js
+node dist/browser-test.js
+
 # Build npm package
 TARBALL=$(cd assets && npm pack ../)
 

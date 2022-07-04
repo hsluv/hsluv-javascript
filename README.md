@@ -1,6 +1,6 @@
 # HSLuv - Human-friendly HSL
 
-[![CI](https://github.com/hsluv/hsluv-javascript/actions/workflows/nodeci.yml/badge.svg)](https://github.com/hsluv/hsluv-javascript/actions/workflows/node.js.yml)
+[![CI](https://github.com/hsluv/hsluv-javascript/actions/workflows/nodeci.yml/badge.svg)](https://github.com/hsluv/hsluv-javascript/actions/workflows/nodeci.yml)
 [![npm](https://img.shields.io/npm/v/hsluv)](https://www.npmjs.com/package/hsluv)
 
 ## Installation
@@ -76,12 +76,20 @@ console.log(conv.hex); // Will print "#ec7d82"
 
 Also available for [Stylus](http://stylus-lang.com/). See [here](https://github.com/hsluv/hsluv-stylus).
 
+## Development
+
+Our [GitHub Actions workflow](https://github.com/hsluv/hsluv-javascript/blob/main/.github/workflows/nodeci.yml)
+will build and test every push and PR to the `main` branch. When a `main` branch receives a commit that
+updates the project version in `package.json`, the workflow will tag the commit, create a draft release
+on GitHub and publish the npm package. Mark your versions with the `-rc` suffix to create pre-releases.
+
 ## Changelog
 
-### 1.0.0-rc1
+### 1.0.0-rc
 
 - New API to avoid heap allocation.
 - Transpiled from [hsluv-haxe](https://github.com/hsluv/hsluv-haxe) and converted manually to TypeScript.
+- New GitHub Actions CI for build, test and publishing automation
 
 ### 0.1.0
 
