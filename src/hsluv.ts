@@ -1,19 +1,19 @@
 export class Hsluv {
     private static hexChars: string = "0123456789abcdef";
     private static refY: number = 1.0;
-    private static refU: number = 0.19783000664283681;
-    private static refV: number = 0.468319994938791;
-    private static kappa: number = 903.2962962962963;
-    private static epsilon: number = 0.0088564516790356308;
-    private static m_r0: number = 3.2409699419045214;
-    private static m_r1: number = -1.5373831775700935;
-    private static m_r2: number = -0.49861076029300328;
-    private static m_g0: number = -0.96924363628087983;
-    private static m_g1: number = 1.8759675015077207;
-    private static m_g2: number = 0.041555057407175613;
-    private static m_b0: number = 0.055630079696993609;
-    private static m_b1: number = -0.20397695888897657;
-    private static m_b2: number = 1.0569715142428786;
+    private static refU: number = 0.19783000664283;
+    private static refV: number = 0.46831999493879;
+    private static kappa: number = 903.2962962;
+    private static epsilon: number = 0.0088564516;
+    private static m_r0: number = 3.240969941904521;
+    private static m_r1: number = -1.537383177570093;
+    private static m_r2: number = -0.498610760293;
+    private static m_g0: number = -0.96924363628087;
+    private static m_g1: number = 1.87596750150772;
+    private static m_g2: number = 0.041555057407175;
+    private static m_b0: number = 0.055630079696993;
+    private static m_b1: number = -0.20397695888897;
+    private static m_b2: number = 1.056971514242878;
 
     // RGB
     public hex: string = '#000000';
@@ -149,9 +149,9 @@ export class Hsluv {
         const lr = Hsluv.toLinear(this.rgb_r);
         const lg = Hsluv.toLinear(this.rgb_g);
         const lb = Hsluv.toLinear(this.rgb_b);
-        this.xyz_x = 0.41239079926595948 * lr + 0.35758433938387796 * lg + 0.18048078840183429 * lb;
-        this.xyz_y = 0.21263900587151036 * lr + 0.71516867876775593 * lg + 0.072192315360733715 * lb;
-        this.xyz_z = 0.019330818715591851 * lr + 0.11919477979462599 * lg + 0.95053215224966058 * lb;
+        this.xyz_x = 0.41239079926595 * lr + 0.35758433938387 * lg + 0.18048078840183 * lb;
+        this.xyz_y = 0.21263900587151 * lr + 0.71516867876775 * lg + 0.072192315360733 * lb;
+        this.xyz_z = 0.019330818715591 * lr + 0.11919477979462 * lg + 0.95053215224966 * lb;
     }
 
     public xyzToLuv(): void {

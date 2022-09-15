@@ -8,7 +8,7 @@ function assertStringEquals(expected, actual) {
 }
 
 function assertFloatClose(expected, actual) {
-    if (Math.abs(expected - actual) > 0.00000001) {
+    if (Math.abs(expected - actual) > 1e-10) {
         console.log(expected);
         console.log(actual);
         throw new Error("Not equals");

@@ -10,7 +10,7 @@
     "HSLuv",
     "HPLuv"
   ],
-  "version": "1.0.0-rc2",
+  "version": "1.0.0-rc3",
   "author": "Alexei Boronine <alexei@boronine.com>",
   "license": "MIT",
   "files": [
