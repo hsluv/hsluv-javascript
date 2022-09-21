@@ -85,7 +85,7 @@ on GitHub and publish the npm package. Mark your versions with the `-rc` suffix 
 
 ## Changelog
 
-### 1.0.0-rc
+### 1.0.0
 
 - New API to avoid heap allocation.
 - Transpiled from [hsluv-haxe](https://github.com/hsluv/hsluv-haxe) and converted manually to TypeScript.
