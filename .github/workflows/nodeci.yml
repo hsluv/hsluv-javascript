@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        node-version: [ 12.x, 14.x, 16.x ]
+        node-version: [ 16.x, 18.x, 20.x ]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -26,7 +26,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Store artifacts
-        if: matrix.node-version == '16.x'
+        if: matrix.node-version == '20.x'
         uses: actions/upload-artifact@v2
         with:
           name: build-assets
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/setup-node@v3
         if: ${{ steps.create-tag.outcome == 'success' }}
         with:
-          node-version: '16.x'
+          node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm publish ./assets/hsluv-${{ env.HSLUV_VERSION }}.tgz --tag rc
         if: ${{ steps.create-tag.outcome == 'success' && contains(env.HSLUV_VERSION, 'rc') }}
