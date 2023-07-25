@@ -43,3 +43,5 @@ echo "{}" >test/tmp/package.json
 (cd test/tmp && npm install "../../assets/${TARBALL}")
 (cd test/tmp && node --input-type=module -e 'import {Hsluv} from "hsluv"; console.log("ESM OK")')
 (cd test/tmp && node --input-type=commonjs -e 'const {Hsluv} = require("hsluv"); console.log("CommonJS OK")')
+(cd test/tmp && echo 'import {Hsluv} from "hsluv";' > test.ts && npx tsc --strict true test.ts && echo "default tsc OK")
+(cd test/tmp && echo 'import {Hsluv} from "hsluv";' > test.ts && npx tsc --strict true --module ES2020 --moduleResolution node16 test.ts && echo "node tsc OK")
