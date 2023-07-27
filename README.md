@@ -85,11 +85,15 @@ on GitHub and publish the npm package. Mark your versions with the `-rc` suffix 
 
 ## Changelog
 
+### 1.0.1
+
+- Fix TypeScript d.ts resolution for certain configurations.
+
 ### 1.0.0
 
 - New API to avoid heap allocation.
 - Transpiled from [hsluv-haxe](https://github.com/hsluv/hsluv-haxe) and converted manually to TypeScript.
-- New GitHub Actions CI for build, test and publishing automation
+- New GitHub Actions CI for build, test and publishing automation.
 
 ### 0.1.0
 
