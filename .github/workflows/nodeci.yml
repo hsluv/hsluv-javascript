@@ -27,7 +27,7 @@ jobs:
       - run: npm run build
       - name: Store artifacts
         if: matrix.node-version == '20.x'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-assets
           path: assets/
