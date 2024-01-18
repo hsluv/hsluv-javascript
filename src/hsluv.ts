@@ -134,6 +134,7 @@ export class Hsluv {
 
     public hexToRgb(): void {
         this.hex = this.hex.toLowerCase();
+        this.hex.length === 4 ? this.hex = "#" + this.hex.charAt(1) + this.hex.charAt(1) + this.hex.charAt(2) + this.hex.charAt(2) + this.hex.charAt(3) + this.hex.charAt(3) : null;
         this.rgb_r = Hsluv.hexToRgbChannel(this.hex, 1);
         this.rgb_g = Hsluv.hexToRgbChannel(this.hex, 3);
         this.rgb_b = Hsluv.hexToRgbChannel(this.hex, 5);
