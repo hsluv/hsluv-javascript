@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "strict": true
+    "module": "NodeNext",
+    "target": "ES2020",
+    "strict": true,
+    "outDir": "dist",
+    "declaration": true
   },
   "include": [
     "src"

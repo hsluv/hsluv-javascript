@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "hsluv": "file:../.."
+  }
+}

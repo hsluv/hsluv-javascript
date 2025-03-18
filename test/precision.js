@@ -1,4 +1,4 @@
-import {Hsluv} from '../dist/esm/hsluv.js';
+import {Hsluv} from '../dist/hsluv.js';
 
 const digits = '0123456789abcdef';
 
