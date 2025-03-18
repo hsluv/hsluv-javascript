@@ -33,7 +33,7 @@
   "homepage": "https://www.hsluv.org",
   "devDependencies": {
     "typescript": "^5.1.6",
-    "esbuild": "^0.18.17"
+    "esbuild": "^0.25.0"
   },
   "scripts": {
     "build": "sh build.sh"
