@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import {Hsluv} from '../dist/hsluv.mjs';
+import {Hsluv} from '../dist/hsluv.js';
 
 function assertStringEquals(expected, actual) {
     if (expected !== actual) {

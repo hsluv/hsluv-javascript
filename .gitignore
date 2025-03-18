@@ -1,4 +1,4 @@
 /node_modules
-/assets
 /dist
-/test/tmp
+/test/tmp/node_modules
+/test/tmp/package-lock.json

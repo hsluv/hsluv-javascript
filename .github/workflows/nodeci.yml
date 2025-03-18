@@ -25,13 +25,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - run: npm run build
-      - name: Store artifacts
-        if: matrix.node-version == '20.x'
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-assets
-          path: assets/
+      - run: ./build.sh
   release:
     runs-on: ubuntu-latest
     # Wait for build because we need the build artifacts here
@@ -40,12 +34,13 @@ jobs:
     if: github.event_name != 'pull_request'
     steps:
       - uses: actions/checkout@v4
-      # Download artifact instead of rebuilding
-      - uses: actions/download-artifact@v4
+      - uses: actions/setup-node@v4
         with:
-          name: build-assets
-          path: assets/
-      - run: echo "HSLUV_VERSION=$(cat assets/VERSION)" >> ${{ github.env }}
+          node-version: 22.x
+          cache: 'npm'
+      - run: npm run build
+      - run: echo "HSLUV_VERSION=$(npm pkg get version)" >> ${{ github.env }}
+      - run: cp dist/hsluv.min.js dist/hsluv-${{ env.HSLUV_VERSION }}.min.js
       - uses: rickstaa/action-create-tag@v1
         id: create-tag
         # When tag already exists, do not fail the job
@@ -55,7 +50,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         if: ${{ steps.create-tag.outcome == 'success' }}
         with:
-          artifacts: assets/hsluv-${{ env.HSLUV_VERSION }}.min.js
+          artifacts: dist/hsluv-${{ env.HSLUV_VERSION }}.min.js
           tag: v${{ env.HSLUV_VERSION }}
           draft: true
           omitBody: true
@@ -63,16 +58,11 @@ jobs:
           bodyFile: "body.md"
           token: ${{ secrets.GITHUB_TOKEN }}
       # https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-      - uses: actions/setup-node@v4
-        if: ${{ steps.create-tag.outcome == 'success' }}
-        with:
-          node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm publish ./assets/hsluv-${{ env.HSLUV_VERSION }}.tgz --tag rc
+      - run: npm publish --provenance --tag rc
         if: ${{ steps.create-tag.outcome == 'success' && contains(env.HSLUV_VERSION, 'rc') }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.HSLUV_NPM_AUTOMATION_TOKEN }}
-      - run: npm publish ./assets/hsluv-${{ env.HSLUV_VERSION }}.tgz
+      - run: npm publish --provenance
         if: ${{ steps.create-tag.outcome == 'success' && !contains(env.HSLUV_VERSION, 'rc') }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.HSLUV_NPM_AUTOMATION_TOKEN }}

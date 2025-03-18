@@ -2,54 +2,28 @@
 
 set -e
 
-rm -rf dist assets test/tmp
-mkdir -p dist assets test/tmp
+rm -rf dist
+mkdir -p dist
 
-# Store package version
-PACKAGE_VERSION=$(node -p -e 'require("./package.json").version')
-echo "${PACKAGE_VERSION}" >assets/VERSION
+npm run build
 
-# First build ESM version that is used for testing
-npx tsc src/hsluv.ts --outDir dist --module es6 --target es6
-mv dist/hsluv.js dist/hsluv.mjs
-
-# Test against snapshot before continuing
-node test/test.mjs
-
-# Build CommonJS version
-npx tsc src/hsluv.ts --outDir dist --module commonjs --target es6
-mv dist/hsluv.js dist/hsluv.cjs
-
-# Build d.ts file
-npx tsc src/hsluv.ts --outDir dist --declaration --emitDeclarationOnly
-
-# Build hsluv.min.js
-echo 'import {Hsluv} from "./hsluv.mjs";window.Hsluv = Hsluv;' >dist/browser-entry.js
-npx esbuild dist/browser-entry.js --bundle --minify --outfile="assets/hsluv-${PACKAGE_VERSION}.min.js"
+node test/test.js
 
 # Sanity check hsluv.min.js window export
 echo "const window = {};" >dist/browser-test.js
-cat "assets/hsluv-${PACKAGE_VERSION}.min.js" >>dist/browser-test.js
+cat "dist/hsluv.min.js" >>dist/browser-test.js
 echo "if (window.Hsluv) { console.log('Browser OK') } else { throw new Error('browser build broken') }" >>dist/browser-test.js
 node dist/browser-test.js
 
-# Build npm package
-TARBALL=$(cd assets && npm pack ../)
-
-# Test that both commonjs and esm imports work
-echo "{}" >test/tmp/package.json
-echo 'import {Hsluv} from "hsluv";' >test/tmp/test.ts
-echo 'import {Hsluv} from "hsluv";' >test/tmp/test.mjs
-echo 'const {Hsluv} = require("hsluv");' >test/tmp/test.cjs
-
-(cd test/tmp && npm install "../../assets/${TARBALL}")
-node test/tmp/test.mjs
+# Make sure npm package is importable
+(cd test/tmp && npm install)
+node test/tmp/test-esm.mjs
 echo "ESM import OK"
-node test/tmp/test.cjs
-echo "CommonJS require OK"
+node test/tmp/test-commonjs.cjs
+echo "CommonJS import OK"
 
 # Test that TypeScript can discover types with various configurations
 for opts in "--module NodeNext --moduleResolution NodeNext" "--module es2015 --moduleResolution bundler"; do
-  (cd test/tmp && npx tsc --strict true --noEmit true $opts test.ts)
+  (cd test/tmp && npx tsc --strict true --noEmit true $opts test-types.ts)
   echo "tsc (--moduleResolution $opts) OK"
 done

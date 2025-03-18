@@ -10,25 +10,29 @@
     "HSLuv",
     "HPLuv"
   ],
-  "version": "1.0.1",
+  "type": "module",
+  "version": "1.1.0-rc1",
   "author": "Alexei Boronine <alexei@boronine.com>",
   "license": "MIT",
   "files": [
     "dist/hsluv.d.ts",
-    "dist/hsluv.mjs",
-    "dist/hsluv.cjs",
+    "dist/hsluv.js",
     "LICENSE",
     "README.md"
   ],
-  "types": "dist/hsluv.d.ts",
   "exports": {
-    "types": "./dist/hsluv.d.ts",
-    "import": "./dist/hsluv.mjs",
-    "require": "./dist/hsluv.cjs"
+    ".": {
+      "types": "./dist/hsluv.d.ts",
+      "import": "./dist/hsluv.js",
+      "require": "./dist/hsluv.js"
+    }
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/hsluv/hsluv-javascript.git"
+  },
+  "engines": {
+    "node": ">18"
   },
   "homepage": "https://www.hsluv.org",
   "devDependencies": {
@@ -36,6 +40,6 @@
     "esbuild": "^0.25.1"
   },
   "scripts": {
-    "build": "sh build.sh"
+    "build": "npx tsc && npx esbuild test/browser-entry.js --bundle --minify --outfile=dist/hsluv.min.js"
   }
 }
