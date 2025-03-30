@@ -16,11 +16,11 @@ jobs:
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        node-version: [ 16.x, 18.x, 20.x ]
+        node-version: [ 18.x, 20.x, 22.x ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -28,7 +28,7 @@ jobs:
       - run: npm run build
       - name: Store artifacts
         if: matrix.node-version == '20.x'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-assets
           path: assets/
@@ -39,9 +39,9 @@ jobs:
     # Only run when pushing to main branch
     if: github.event_name != 'pull_request'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download artifact instead of rebuilding
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: build-assets
           path: assets/
@@ -63,10 +63,10 @@ jobs:
           bodyFile: "body.md"
           token: ${{ secrets.GITHUB_TOKEN }}
       # https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: ${{ steps.create-tag.outcome == 'success' }}
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm publish ./assets/hsluv-${{ env.HSLUV_VERSION }}.tgz --tag rc
         if: ${{ steps.create-tag.outcome == 'success' && contains(env.HSLUV_VERSION, 'rc') }}

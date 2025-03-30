@@ -49,8 +49,7 @@ node test/tmp/test.cjs
 echo "CommonJS require OK"
 
 # Test that TypeScript can discover types with various configurations
-# Discussion: https://github.com/hsluv/hsluv-javascript/pull/4
-for m in "node10" "node16" "bundler"; do
-  (cd test/tmp && npx tsc --strict true --module es2020 --moduleResolution "$m" test.ts)
-  echo "tsc (--moduleResolution $m) OK"
+for opts in "--module NodeNext --moduleResolution NodeNext" "--module es2015 --moduleResolution bundler"; do
+  (cd test/tmp && npx tsc --strict true --noEmit true $opts test.ts)
+  echo "tsc (--moduleResolution $opts) OK"
 done
