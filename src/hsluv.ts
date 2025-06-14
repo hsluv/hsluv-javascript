@@ -350,7 +350,6 @@ export class Hsluv {
         this.rgbToXyz();
         this.xyzToLuv();
         this.luvToLch();
-        this.lchToHpluv();
         this.lchToHsluv();
     }
 
@@ -358,7 +357,6 @@ export class Hsluv {
         this.rgbToXyz();
         this.xyzToLuv();
         this.luvToLch();
-        this.lchToHpluv();
         this.lchToHpluv();
     }
 
