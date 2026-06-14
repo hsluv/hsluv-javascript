@@ -78,10 +78,14 @@ Also available for [Stylus](http://stylus-lang.com/). See [here](https://github.
 
 ## Development
 
-Our [GitHub Actions workflow](https://github.com/hsluv/hsluv-javascript/blob/main/.github/workflows/nodeci.yml)
-will build and test every push and PR to the `main` branch. When a `main` branch receives a commit that
-updates the project version in `package.json`, the workflow will tag the commit, create a draft release
-on GitHub and publish the npm package. Mark your versions with the `-rc` suffix to create pre-releases.
+Our [Node.js CI workflow](https://github.com/hsluv/hsluv-javascript/blob/main/.github/workflows/nodeci.yml)
+will build and test every push and PR to the `main` branch.
+
+To publish a release, configure npm trusted publishing for the `hsluv/hsluv-javascript` repository and
+`npm-publish.yml` workflow, then create a GitHub Release. The release tag must match the version in
+`package.json`. The [Publish to npm workflow](https://github.com/hsluv/hsluv-javascript/blob/main/.github/workflows/npm-publish.yml)
+will build the package and publish it to npm with provenance. Prerelease versions (for example `1.2.3-rc.1`)
+are automatically published with the matching npm dist-tag.
 
 ## Changelog
 
